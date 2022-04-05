@@ -3,7 +3,7 @@ const contrib = require('blessed-contrib');
 
 const snake = [{x:10, y:0}, {x:9, y:0}, {x:8, y:0}, {x:6, y:0},  {x:5, y:0}, {x:4, y:0},  {x:3, y:0} ] 
 let direction = "right"
-const fruite = {}
+const fruites = []
 let score = 0
 let timer
 
@@ -111,13 +111,18 @@ function clearScreen(){
  }
 
  function move(){
-  
+  let isEated = false
   snake.unshift(newHead(snake[0]))
-   if (snake[0].x === fruite.x && snake[0].y === fruite.y) {
-    updateScore()
-    generateFruite()
-    snake.unshift(newHead(snake[0]))
-   } else snake.pop()
+  fruites.forEach(fruite => {
+     if (snake[0].x === fruite.x && snake[0].y === fruite.y) {
+      updateScore()
+      generateFruite()
+      snake.unshift(newHead(snake[0]))
+      isEated = true
+      } 
+  })
+  if(!isEated) snake.pop()
+
  }
 
  function isGameOver(){
@@ -138,18 +143,30 @@ function clearScreen(){
 }
 
  function generateFruite() {
-  fruite.x = getRandomArbitrary(1, gameBox.width - 2)
-  fruite.y = getRandomArbitrary(2, gameBox.height - 2)
+   let countFruites = getRandomArbitrary(2, 7)
+   for(let i = 0; i<countFruites; i++){
+    fruites[i] = {}
+  fruites[i].x = getRandomArbitrary(1, gameBox.width - 2)
+  fruites[i].y = getRandomArbitrary(2, gameBox.height - 2)
+   }
+// check if fruite was generated on snake
+   snake.forEach(snake => {
+    fruites.forEach(fruite => {
+      if(snake.x === fruite.x && snake.y === fruite.y ) generateFruite()
+   })
+  })
 }
 
 function drawFruite(){
-  blessed.box({
-    parent: gameBox,
-    top: fruite.y,
-    left: fruite.x,
-    height:1,
-    width:1,
-    style:{ bg: 'green'}
+  fruites.forEach(fruite => {
+    blessed.box({
+      parent: gameBox,
+      top: fruite.y,
+      left: fruite.x,
+      height:1,
+      width:1,
+      style:{ bg: 'green'}
+    })
   })
 }
 
