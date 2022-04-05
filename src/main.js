@@ -144,22 +144,21 @@ function clearScreen(){
   return Math.round(Math.random() * (max - min) + min)
 }
  function generateFruiteCords(){
-  return {
-    x: getRandomArbitrary(1, gameBox.width - 2),
-    y: getRandomArbitrary(2, gameBox.height - 2)
+   let coords = {}
+   while(true){
+   coords.x = getRandomArbitrary(1, gameBox.width - 2),
+   coords.y = getRandomArbitrary(2, gameBox.height - 2)
+  for(let i = 0; i<snake.length; i++){
+    if(snake[i].x === coords.x && snake[i].y === coords.y ) break;
+    return coords
   }
+   }
  }
  function generateFruite() {
    let countFruites = getRandomArbitrary(2, 7)
    for(let i = 0; i<countFruites; i++){
-    fruites[i] = generateFruiteCords()
+    fruites[i] = generateFruiteCords()  
    }
-// check if fruite was generated on snake
-   snake.forEach(snake => {
-    for(let i = 0; i<fruites.length; i++){
-      if(snake.x === fruites[i].x && snake.y === fruites[i].y ) fruites[i] = generateFruiteCords()
-    }
-  })
 }
 
 function drawFruite(){
