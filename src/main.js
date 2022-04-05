@@ -3,7 +3,7 @@ const contrib = require('blessed-contrib');
 
 const snake = [{x:10, y:0}, {x:9, y:0}, {x:8, y:0}, {x:6, y:0},  {x:5, y:0}, {x:4, y:0},  {x:3, y:0} ] 
 let direction = "right"
-const fruites = []
+let fruites = []
 let score = 0
 let timer
 
@@ -116,7 +116,9 @@ function clearScreen(){
   fruites.forEach(fruite => {
      if (snake[0].x === fruite.x && snake[0].y === fruite.y) {
       updateScore()
-      generateFruite()
+      //generateFruite()
+      fruites = fruites.filter(obj => obj.x != fruite.x && obj.y != fruite.y)
+      if (!fruites.length) generateFruite()
       snake.unshift(newHead(snake[0]))
       isEated = true
       } 
