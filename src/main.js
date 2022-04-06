@@ -146,12 +146,17 @@ function clearScreen(){
  function generateFruiteCords(){
    let coords = {}
    while(true){
+    let unique = true
    coords.x = getRandomArbitrary(1, gameBox.width - 2),
    coords.y = getRandomArbitrary(2, gameBox.height - 2)
   for(let i = 0; i<snake.length; i++){
-    if(snake[i].x === coords.x && snake[i].y === coords.y ) break;
-    return coords
+    if(snake[i].x === coords.x && snake[i].y === coords.y ) {
+      unique = false
+      break
+    }
   }
+  if(unique) return coords
+
    }
  }
  function generateFruite() {
